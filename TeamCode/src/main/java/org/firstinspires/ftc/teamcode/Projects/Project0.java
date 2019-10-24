@@ -2,19 +2,49 @@ package org.firstinspires.ftc.teamcode.Projects;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+/**
+ * Simple Mecanum drive configuration
+ *
+ * Created September 21, 2017 by Ryan Alameddine
+ *
+ *
+ * @author Ryan Alameddine
+ *
+ * @version 4.0
+ */
 
 public class Project0
 {
     /* Public OpMode members. */
-    public DcMotor liftMotor = null;
+    public DcMotor  frontRight = null;
+    public DcMotor  frontLeft  = null;
+    public DcMotor  backRight  = null;
+    public DcMotor  backLeft   = null;
 
-    public BNO055IMU imu = null;
+    public DcMotor liftMotor   = null;
+
+    //private DcMotor armRight = null;
+    //private DcMotor armLeft  = null;
+
+    /* DiServo Claw servoes */
+    //private Servo clawRight = null;
+    //private Servo clawLeft  = null;
+
+    //public Servo JewelArmServo = null;
+
+    //public ColorSensor colorSensor = null;
+    //public BNO055IMU imu = null;
 
     /* local OpMode members. */
-    private HardwareMap hwMap   = null;
+    HardwareMap         hwMap   = null;
+    private ElapsedTime period  = new ElapsedTime();
 
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
@@ -22,26 +52,81 @@ public class Project0
         hwMap = ahwMap;
 
         //Define and Initialize Motors
+        frontRight = hwMap.dcMotor.get("frontRight");
+        frontLeft  = hwMap.dcMotor.get("frontLeft");
+        backRight  = hwMap.dcMotor.get("backRight");
+        backLeft   = hwMap.dcMotor.get("backLeft");
         liftMotor = hwMap.dcMotor.get("liftMotor");
 
+        //armRight   = hwMap.dcMotor.get("armRight");
+        //armLeft    = hwMap.dcMotor.get("armLeft");
+
+        //Define and Initialize Servos
+        //clawRight = hwMap.servo.get("clawRight");
+        //clawLeft  = hwMap.servo.get("clawLeft");
+
+        //JewelArmServo = hwMap.servo.get("jewelArmServo");
+
+        //colorSensor = hwMap.colorSensor.get("colorSensor");
+
         //Define and Initialize Sensors
-        loadIMU();
+        //loadIMU();
 
         //Setup Motor directions and Encoder settings
-        liftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft .setDirection(DcMotor.Direction.REVERSE);
+        backLeft  .setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        backRight .setDirection(DcMotor.Direction.FORWARD);
+        //armRight  .setDirection(DcMotor.Direction.REVERSE);
+        //armLeft   .setDirection(DcMotor.Direction.FORWARD);
 
-        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontLeft .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft  .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //armRight  .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //armLeft   .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft  .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //armRight  .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //armLeft   .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        StopMotors();
+        // Set all motors to zero power
+        frontLeft .setPower(0);
+        frontRight.setPower(0);
+        backLeft  .setPower(0);
+        backRight .setPower(0);
+
+        //armRight  .setPower(0);
+        //armLeft   .setPower(0);
     }
 
-    public void StopMotors(){
-        liftMotor.setPower(0);
+
+    /**
+     *
+     * waitForTick implements a periodic delay. However, this acts like a metronome with a regular
+     * periodic tick.  This is used to compensate for varying processing times for each cycle.
+     * The function looks at the elapsed cycle time, and sleeps for the remaining time interval.
+     *
+     * @param periodMs  Length of wait cycle in mSec.
+     * @throws InterruptedException
+     */
+    public void waitForTick(long periodMs) throws InterruptedException {
+
+        long  remaining = periodMs - (long)period.milliseconds();
+
+        // sleep for the remaining portion of the regular cycle period.
+        if (remaining > 0)
+            Thread.sleep(remaining);
+
+        // Reset the cycle clock for the next pass.
+        period.reset();
     }
 
-    private void loadIMU(){
+    /*void loadIMU(){
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
@@ -56,7 +141,7 @@ public class Project0
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        imu = hwMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-    }
+        //imu = hwMap.get(BNO055IMU.class, "imu");
+        //imu.initialize(parameters);
+    }*/
 }
