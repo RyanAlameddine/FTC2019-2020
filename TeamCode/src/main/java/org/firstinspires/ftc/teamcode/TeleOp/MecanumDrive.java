@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.teamcode.MathF;
 import org.firstinspires.ftc.teamcode.Projects.Project0;
 
 @TeleOp(name="MecanumDrive", group="Mecanum")
@@ -82,6 +83,11 @@ public class MecanumDrive extends LinearOpMode{
             robot.frontRight.setPower(Float.isNaN(frontRight) ? 0 : frontRight * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
             robot.backLeft  .setPower(Float.isNaN(backLeft)   ? 0 : backLeft   * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
             robot.backRight .setPower(Float.isNaN(backRight)  ? 0 : backRight  * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+
+            if(gamepad1.b){
+                MathF.slowAdd(1, 5);
+                //slow down the program to stop robot from moving too quickly.
+            }
         }
 
         //Reset robot motors to stop when game is finished
