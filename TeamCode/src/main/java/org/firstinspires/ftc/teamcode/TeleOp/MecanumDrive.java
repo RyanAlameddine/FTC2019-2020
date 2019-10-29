@@ -6,14 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Projects.Project0;
 
-/**
- * Simple Mecanum controller
- *
- * Created September 21, 2017 by Ryan Alameddine
- *
- * @author Ryan Alameddine
- */
-
 @TeleOp(name="MecanumDrive", group="Mecanum")
 public class MecanumDrive extends LinearOpMode{
     private Project0 robot = new Project0();
@@ -52,48 +44,13 @@ public class MecanumDrive extends LinearOpMode{
         waitForStart();
 
         while(opModeIsActive()) {
-            //region A
-            //Flip 180 degrees on A press
-            /*if(gamepad1.a && !isTurning){
-                isTurning = true;
-                robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 5);
-                Orientation orientation = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                rotation = Float.parseFloat(MathE.formatAngle(orientation.angleUnit, orientation.firstAngle));
-                if(rotation > 0){
-                    rotation = rotation - 180;
-                }else if(rotation < 0){
-                    rotation = rotation + 180;
-                }
-            }
-
-            if(isTurning){
-                Orientation orientation = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                float Angle = Float.parseFloat(MathE.formatAngle(orientation.angleUnit, orientation.firstAngle));
-                // -180 0 180
-
-                telemetry.addData("Angle", Angle);
-                telemetry.update();
-                if(Math.abs(rotation - Angle) > 30 && Math.abs(rotation - Angle + 360) > 30){
-                    robot.backLeft  .setPower(-.6); // b f
-                    robot.backRight .setPower(0.6); // b f
-                    robot.frontLeft .setPower(-.6);
-                    robot.frontRight.setPower(0.6);
-
-                    continue;
-                }else{
-                    robot.imu.stopAccelerationIntegration();
-                    isTurning = false;
-                }
-            }*/
-            //endregion
-
             //region Mecanum Drive math and controls
             //Get the 2 dimensional vector of the direction of left stick and rotation based on right stick
             vectorF    = new VectorF(-gamepad1.left_stick_x, gamepad1.left_stick_y);
             speed      = vectorF.magnitude();
             vectorF    = new VectorF(vectorF.get(0) / speed, vectorF.get(1) / speed);
             angle      = (float) Math.atan2(vectorF.get(0), vectorF.get(1));
-            direction  = gamepad1.right_stick_x * -1;
+            direction  = gamepad1.right_stick_x;
 
             //Apply mathematical operations to find speeds of each motor
             frontLeft  = (float) (speed * Math.sin(angle + Math.PI / 4) + direction) * speedMultiplier;
@@ -121,12 +78,10 @@ public class MecanumDrive extends LinearOpMode{
             }
             //endregion
 
-            robot.frontLeft .setPower(Float.isNaN(frontLeft)  ? 0 : frontLeft  * (gamepad1.left_trigger > .2 ? 1 : slowModeMultiplier));
-            robot.frontRight.setPower(Float.isNaN(frontRight) ? 0 : frontRight * (gamepad1.left_trigger > .2 ? 1 : slowModeMultiplier));
-            robot.backLeft  .setPower(Float.isNaN(backLeft)   ? 0 : backLeft   * (gamepad1.left_trigger > .2 ? 1 : slowModeMultiplier));
-            robot.backRight .setPower(Float.isNaN(backRight)  ? 0 : backRight  * (gamepad1.left_trigger > .2 ? 1 : slowModeMultiplier));
-
-            //MADE BY PATRICK BRIAN HASTINGS
+            robot.frontLeft .setPower(Float.isNaN(frontLeft)  ? 0 : frontLeft  * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+            robot.frontRight.setPower(Float.isNaN(frontRight) ? 0 : frontRight * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+            robot.backLeft  .setPower(Float.isNaN(backLeft)   ? 0 : backLeft   * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
+            robot.backRight .setPower(Float.isNaN(backRight)  ? 0 : backRight  * (gamepad1.left_trigger < .8 ? 1 : slowModeMultiplier));
         }
 
         //Reset robot motors to stop when game is finished

@@ -9,17 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/**
- * Simple Mecanum drive configuration
- *
- * Created September 21, 2017 by Ryan Alameddine
- *
- *
- * @author Ryan Alameddine
- *
- * @version 4.0
- */
-
 public class Project0
 {
     /* Public OpMode members. */
@@ -56,16 +45,8 @@ public class Project0
         frontLeft  = hwMap.dcMotor.get("frontLeft");
         backRight  = hwMap.dcMotor.get("backRight");
         backLeft   = hwMap.dcMotor.get("backLeft");
-        //liftMotor = hwMap.dcMotor.get("liftMotor");
-
-        //armRight   = hwMap.dcMotor.get("armRight");
-        //armLeft    = hwMap.dcMotor.get("armLeft");
 
         //Define and Initialize Servos
-        //clawRight = hwMap.servo.get("clawRight");
-        //clawLeft  = hwMap.servo.get("clawLeft");
-
-        //JewelArmServo = hwMap.servo.get("jewelArmServo");
 
         //colorSensor = hwMap.colorSensor.get("colorSensor");
 
@@ -77,31 +58,22 @@ public class Project0
         backLeft  .setDirection(DcMotor.Direction.REVERSE);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         backRight .setDirection(DcMotor.Direction.FORWARD);
-        //armRight  .setDirection(DcMotor.Direction.REVERSE);
-        //armLeft   .setDirection(DcMotor.Direction.FORWARD);
 
         frontLeft .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeft  .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //armRight  .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //armLeft   .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         frontLeft .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft  .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //armRight  .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //armLeft   .setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set all motors to zero power
         frontLeft .setPower(0);
         frontRight.setPower(0);
         backLeft  .setPower(0);
         backRight .setPower(0);
-
-        //armRight  .setPower(0);
-        //armLeft   .setPower(0);
     }
 
 
@@ -125,23 +97,4 @@ public class Project0
         // Reset the cycle clock for the next pass.
         period.reset();
     }
-
-    /*void loadIMU(){
-        // Set up the parameters with which we will use our IMU. Note that integration
-        // algorithm here just reports accelerations to the logcat log; it doesn't actually
-        // provide positional information.
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-        // and named "imu".
-        //imu = hwMap.get(BNO055IMU.class, "imu");
-        //imu.initialize(parameters);
-    }*/
 }
