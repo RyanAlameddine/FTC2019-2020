@@ -28,7 +28,7 @@ public class Project0
     public DcMotor  backRight  = null;
     public DcMotor  backLeft   = null;
 
-    public DcMotor liftMotor   = null;
+    //public DcMotor liftMotor   = null;
 
     //private DcMotor armRight = null;
     //private DcMotor armLeft  = null;
@@ -56,7 +56,7 @@ public class Project0
         frontLeft  = hwMap.dcMotor.get("frontLeft");
         backRight  = hwMap.dcMotor.get("backRight");
         backLeft   = hwMap.dcMotor.get("backLeft");
-        liftMotor = hwMap.dcMotor.get("liftMotor");
+        //liftMotor = hwMap.dcMotor.get("liftMotor");
 
         //armRight   = hwMap.dcMotor.get("armRight");
         //armLeft    = hwMap.dcMotor.get("armLeft");
