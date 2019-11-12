@@ -9,33 +9,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class Project0
+public class Project0 extends MecanumProject
 {
-    /* Public OpMode members. */
-    public DcMotor  frontRight = null;
-    public DcMotor  frontLeft  = null;
-    public DcMotor  backRight  = null;
-    public DcMotor  backLeft   = null;
-
-    //public DcMotor liftMotor   = null;
-
-    //private DcMotor armRight = null;
-    //private DcMotor armLeft  = null;
-
-    /* DiServo Claw servoes */
-    //private Servo clawRight = null;
-    //private Servo clawLeft  = null;
-
-    //public Servo JewelArmServo = null;
-
-    //public ColorSensor colorSensor = null;
-    //public BNO055IMU imu = null;
-
-    /* local OpMode members. */
-    HardwareMap         hwMap   = null;
-    private ElapsedTime period  = new ElapsedTime();
-
     /* Initialize standard Hardware interfaces */
+    @Override
     public void init(HardwareMap ahwMap) {
         //Save reference to Hardware map
         hwMap = ahwMap;
@@ -46,18 +23,11 @@ public class Project0
         backRight  = hwMap.dcMotor.get("backRight");
         backLeft   = hwMap.dcMotor.get("backLeft");
 
-        //Define and Initialize Servos
-
-        //colorSensor = hwMap.colorSensor.get("colorSensor");
-
-        //Define and Initialize Sensors
-        //loadIMU();
-
         //Setup Motor directions and Encoder settings
-        frontLeft .setDirection(DcMotor.Direction.REVERSE);
-        backLeft  .setDirection(DcMotor.Direction.REVERSE);
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-        backRight .setDirection(DcMotor.Direction.FORWARD);
+        frontLeft .setDirection(DcMotor.Direction.FORWARD);
+        backLeft  .setDirection(DcMotor.Direction.FORWARD);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backRight .setDirection(DcMotor.Direction.REVERSE);
 
         frontLeft .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -74,27 +44,5 @@ public class Project0
         frontRight.setPower(0);
         backLeft  .setPower(0);
         backRight .setPower(0);
-    }
-
-
-    /**
-     *
-     * waitForTick implements a periodic delay. However, this acts like a metronome with a regular
-     * periodic tick.  This is used to compensate for varying processing times for each cycle.
-     * The function looks at the elapsed cycle time, and sleeps for the remaining time interval.
-     *
-     * @param periodMs  Length of wait cycle in mSec.
-     * @throws InterruptedException
-     */
-    public void waitForTick(long periodMs) throws InterruptedException {
-
-        long  remaining = periodMs - (long)period.milliseconds();
-
-        // sleep for the remaining portion of the regular cycle period.
-        if (remaining > 0)
-            Thread.sleep(remaining);
-
-        // Reset the cycle clock for the next pass.
-        period.reset();
     }
 }
