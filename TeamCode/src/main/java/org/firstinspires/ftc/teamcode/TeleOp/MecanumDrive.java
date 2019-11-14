@@ -47,15 +47,14 @@ public class MecanumDrive extends LinearOpMode{
         while(opModeIsActive()) {
             //region Mecanum Drive math and controls
             //Get the 2 dimensional vector of the direction of left stick and rotation based on right stick
-            vectorF    = new VectorF(-gamepad1.left_stick_x, gamepad1.left_stick_y);
+            vectorF    = new VectorF(gamepad1.left_stick_x, -gamepad1.left_stick_y);
             speed      = vectorF.magnitude();
             vectorF    = new VectorF(vectorF.get(0) / speed, vectorF.get(1) / speed);
             angle      = (float) Math.atan2(vectorF.get(0), vectorF.get(1));
-            direction  = gamepad1.right_stick_x * -1;
+            direction  = gamepad1.right_stick_x;
 
             //Apply mathematical operations to find speeds of each motor
-            frontLeft  = (float) (speed * Math.sin(angle + Math.PI / 4) + direction)
-                    * speedMultiplier;
+            frontLeft  = (float) (speed * Math.sin(angle + Math.PI / 4) + direction) * speedMultiplier;
             frontRight = (float) (speed * Math.cos(angle + Math.PI / 4) - direction) * speedMultiplier;
             backLeft   = (float) (speed * Math.cos(angle + Math.PI / 4) + direction) * speedMultiplier;
             backRight  = (float) (speed * Math.sin(angle + Math.PI / 4) - direction) * speedMultiplier;

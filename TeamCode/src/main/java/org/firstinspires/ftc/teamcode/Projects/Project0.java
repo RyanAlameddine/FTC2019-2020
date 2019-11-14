@@ -24,10 +24,10 @@ public class Project0 extends MecanumProject
         backLeft   = hwMap.dcMotor.get("backLeft");
 
         //Setup Motor directions and Encoder settings
-        frontLeft .setDirection(DcMotor.Direction.FORWARD);
-        backLeft  .setDirection(DcMotor.Direction.FORWARD);
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backRight .setDirection(DcMotor.Direction.REVERSE);
+        frontLeft .setDirection(DcMotor.Direction.REVERSE);
+        backLeft  .setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        backRight .setDirection(DcMotor.Direction.FORWARD);
 
         frontLeft .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
