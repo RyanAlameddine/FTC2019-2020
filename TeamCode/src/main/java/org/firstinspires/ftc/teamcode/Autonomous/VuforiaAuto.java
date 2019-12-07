@@ -4,36 +4,47 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Projects.MecanumProject;
 import org.firstinspires.ftc.teamcode.Projects.Project0;
+import org.firstinspires.ftc.teamcode.Projects.Project1;
+import org.firstinspires.ftc.teamcode.Projects.ProjectMecCam;
 
 @Autonomous(name="VuforiaAuto", group="Mecanum")
 public class VuforiaAuto extends LinearOpMode{
-    public MecanumProject robot = new Project0();
-
-    VuforiaLocalizer localizer;
+    public ProjectMecCam robot = new ProjectMecCam();
 
     @Override
     public void runOpMode() throws InterruptedException {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        params.vuforiaLicenseKey = "AdLSetb/////AAAAGbm2rHS0ck7Fgxwjtp3Cbclm98DyEfx+PLZ+VgF6AjcoFsOoMwgjWair2KgZLmc9MwR74NxG2WqBPqWs4ocmgQ0DyEnDW0tSzgUhH/UgBobUpmHrqSY5htttuRw6OKo9/A+3t39YCQj0+qxjsIj6cg/bStC8lI11ZMYukRnCSKLQQOVGxAbe0CuL7cBQ34gc8hqxOzk1gVXyj+U9XxxjKnJ18qiCcisprtAaRuRB6xzP8MzUQoql0Ajn8ldXW3mZSKjc3tq0LPYDwYmAaKkAxNz/jabhUk3m4Gyti5ApeYtw8yWA0AkKum8Fb8W/VTnc6FckH4BXgXOcDng++FTw9vihPiSJ7a36I2hU1Q8+NnuC";
-        params.cameraDirection = VuforiaLocalizer.CameraDirection.BACK; this.localizer = ClassFactory.createVuforiaLocalizer(params);
-        //Load relic data
-        VuforiaTrackables relicTrackables = this.localizer.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate");
-        robot.init(hardwareMap);
-        //Start searching for relics
-
-
         //Initialize ProjectMecanum with hardwareMap configuration
         robot.init(hardwareMap);
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        parameters.vuforiaLicenseKey = "AclOCKX/////AAABmVMcwvR8lE0inBkpYnUkWaw7ay7BC7I7cnlDQhYSBmWArpdTIiM8c2VKv7t8NMx+gJbqipUTvEY5njhhVXdcTDJOg6RmtybMYHMbDBevdAGg+SIPSeBOeXi5pJd6xlDDPu1JbSPQRyEZKZmWXxoIkht2JZD0DC6QxdGJUxVi0n0FD0dLVRAuWSr+ROLsi13GA126OzIJvm6Ego5RXeEAsM/RPk3mUH40iSeXU6mum+LzdV/yl8u0VC2YeHMH6GNKWGa0Ux+DB5Fp2f8Mjnz+xnuXaralDWBhR2r3DzKE979cNXeCpY9WtmRatRKWdhpOSm3QwLfAowIeZOZ6tH8EU8q4qN61rzLpzd/A6rR4QLp5";
+        parameters.cameraName = robot.webcam;
+
+        VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        VuforiaTrackables trackables = vuforia.loadTrackablesFromAsset("Skystone");
+
+        VuforiaTrackable skystoneTrackable = trackables.get(0);
+        skystoneTrackable.setName("Skystone");
+
+        trackables.activate();
         waitForStart();
 
+
+        while(opModeIsActive()){
+            OpenGLMatrix location = ((VuforiaTrackableDefaultListener) trackables.get(0).getListener()).getUpdatedRobotLocation();
+            if(location != null) {
+                telemetry.addData("Location", location.getTranslation());
+            }
+            telemetry.update();
+        }
 
 
         //Reset robot motors to stop when game is finished

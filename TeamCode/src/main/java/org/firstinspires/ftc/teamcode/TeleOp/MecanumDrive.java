@@ -45,6 +45,21 @@ public class MecanumDrive extends LinearOpMode{
         waitForStart();
 
         while(opModeIsActive()) {
+            if(gamepad1.dpad_up){
+                robot.liftMotor.setPower(-.4);
+            }else if(gamepad1.dpad_down){
+                robot.liftMotor.setPower(.4);
+            }else{
+                robot.liftMotor.setPower(0);
+            }
+
+            if(gamepad1.left_trigger > .5f){
+                robot.liftServo.setPosition(0);
+            }else if(gamepad1.left_bumper){
+                robot.liftServo.setPosition(1);
+            }
+            robot.clawServo.setPosition(gamepad1.right_trigger);
+
             //region Mecanum Drive math and controls
             //Get the 2 dimensional vector of the direction of left stick and rotation based on right stick
             vectorF    = new VectorF(gamepad1.left_stick_x, -gamepad1.left_stick_y);
