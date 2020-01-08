@@ -1,13 +1,8 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import android.widget.ToggleButton;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.teamcode.MathF;
-import org.firstinspires.ftc.teamcode.Projects.Project0;
 import org.firstinspires.ftc.teamcode.Projects.ProjectPushbot;
 
 @TeleOp(name="PushbotDrive", group="Mecanum")
@@ -20,15 +15,17 @@ public class PushbotDrive extends LinearOpMode{
         robot.init(hardwareMap);
         waitForStart();
 
-        boolean raised = true;
-        boolean bPressed = false;
+        boolean backRaised  = true;
+        boolean frontRaised = true;
+        boolean yPressed    = false;
+        boolean aPressed    = false;
+        boolean bPressed    = false;
 
-        boolean aPressed = false;
         float speedMultiplier = 1;
         while(opModeIsActive()) {
-            if (gamepad1.a){
-                if(aPressed == false){
-                    aPressed = true;
+            if (gamepad1.b){
+                if(bPressed == false){
+                    bPressed = true;
                     if(speedMultiplier == 1){
                         speedMultiplier = .5f;
                     }
@@ -38,30 +35,45 @@ public class PushbotDrive extends LinearOpMode{
                 }
             }
             else {
-                aPressed = false;
+                bPressed = false;
             }
 
             robot.leftMotor .setPower(-gamepad1.left_stick_y * speedMultiplier);
             robot.rightMotor.setPower(-gamepad1.right_stick_y* speedMultiplier);
 
-            if (gamepad1.b){
-                if(bPressed == false){
-                    bPressed = true;
-                    raised = !raised;
-                    if(raised == true){
-                        robot.leftServo .setPosition(0);
-                        robot.rightServo.setPosition(1);
+            if (gamepad1.y){
+                if(yPressed == false){
+                    yPressed = true;
+                    backRaised = !backRaised;
+                    if(backRaised == true){
+                        robot.leftServoF.setPosition(0);
+                        robot.rightServoF.setPosition(1);
                     }else{
-                        robot.leftServo .setPosition(1);
-                        robot.rightServo.setPosition(0);
+                        robot.leftServoF.setPosition(1);
+                        robot.rightServoF.setPosition(0);
                     }
                 }
             }
             else {
-                bPressed = false;
+                yPressed = false;
             }
 
-
+            if (gamepad1.a){
+                if(aPressed == false){
+                    aPressed = true;
+                    frontRaised = !frontRaised;
+                    if(frontRaised == true){
+                        robot.leftServoB.setPosition(1);
+                        robot.rightServoB.setPosition(0);
+                    }else{
+                        robot.leftServoB.setPosition(0);
+                        robot.rightServoB.setPosition(1);
+                    }
+                }
+            }
+            else {
+                aPressed = false;
+            }
         }
 
         //Reset robot motors to stop when game is finished

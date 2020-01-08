@@ -62,7 +62,7 @@ public class MecanumDrive extends LinearOpMode{
 
             //region Mecanum Drive math and controls
             //Get the 2 dimensional vector of the direction of left stick and rotation based on right stick
-            vectorF    = new VectorF(gamepad1.left_stick_x, -gamepad1.left_stick_y);
+            vectorF    = new VectorF(gamepad1.left_stick_x, gamepad1.left_stick_y);
             speed      = vectorF.magnitude();
             vectorF    = new VectorF(vectorF.get(0) / speed, vectorF.get(1) / speed);
             angle      = (float) Math.atan2(vectorF.get(0), vectorF.get(1));

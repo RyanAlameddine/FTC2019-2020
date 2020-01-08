@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Projects;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -9,8 +8,10 @@ public class ProjectPushbot extends Project
 {
     public DcMotor rightMotor = null;
     public DcMotor leftMotor  = null;
-    public Servo   leftServo  = null;
-    public Servo   rightServo = null;
+    public Servo   leftServoF = null;
+    public Servo  rightServoF = null;
+    public Servo   leftServoB = null;
+    public Servo  rightServoB = null;
 
     /* Initialize standard Hardware interfaces */
     @Override
@@ -19,10 +20,12 @@ public class ProjectPushbot extends Project
         hwMap = ahwMap;
 
         //Define and Initialize Motors
-        rightMotor = hwMap.dcMotor.get("rightMotor");
-        leftMotor  = hwMap.dcMotor.get("leftMotor");
-        leftServo  = hwMap.servo.get("leftServo");
-        rightServo = hwMap.servo.get("rightServo");
+        rightMotor  = hwMap.dcMotor.get("rightMotor");
+        leftMotor   = hwMap.dcMotor.get("leftMotor");
+        leftServoF  = hwMap.servo.get("leftServoF");
+        rightServoF = hwMap.servo.get("rightServoF");
+        leftServoB  = hwMap.servo.get("leftServoB");
+        rightServoB = hwMap.servo.get("rightServoB");
 
         //Setup Motor directions and Encoder settings
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -39,9 +42,11 @@ public class ProjectPushbot extends Project
     }
 
     public void Stop(){
-        leftMotor .setPower(0);
-        rightMotor.setPower(0);
-        leftServo .setPosition(1);
-        rightServo.setPosition(0);
+        leftMotor  .setPower(0);
+        rightMotor .setPower(0);
+        leftServoF .setPosition(1);
+        rightServoF.setPosition(0);
+        leftServoB .setPosition(1);
+        rightServoB.setPosition(0);
     }
 }
