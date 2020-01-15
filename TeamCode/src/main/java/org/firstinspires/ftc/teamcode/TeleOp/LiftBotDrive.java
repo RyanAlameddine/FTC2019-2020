@@ -4,12 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.teamcode.MathF;
 import org.firstinspires.ftc.teamcode.Projects.Project0;
+import org.firstinspires.ftc.teamcode.Projects.ProjectLift;
 
-@TeleOp(name="MecanumDrive", group="Mecanum")
-public class MecanumDrive extends LinearOpMode{
-    private Project0 robot = new Project0();
+@TeleOp(name="LiftBotDrive", group="Mecanum")
+public class LiftBotDrive extends LinearOpMode{
+    private ProjectLift robot = new ProjectLift();
 
     /* Setting variables */
 
@@ -44,21 +44,53 @@ public class MecanumDrive extends LinearOpMode{
         robot.init(hardwareMap);
         waitForStart();
 
+        boolean bPressed = false;
+        boolean raised = false;
         while(opModeIsActive()) {
+            if (gamepad1.b){
+                if(bPressed == false){
+                    bPressed = true;
+                    raised = !raised;
+                    if(raised){
+                        robot.clawServo.setPosition(0);
+                    }
+                    else{
+                        robot.clawServo.setPosition(1);
+                    }
+                }
+            }
+            else {
+                bPressed = false;
+            }
+
             if(gamepad1.dpad_up){
-                robot.liftMotor.setPower(-.4);
-            }else if(gamepad1.dpad_down){
                 robot.liftMotor.setPower(.4);
+            }else if(gamepad1.dpad_down){
+                robot.liftMotor.setPower(-.4);
             }else{
                 robot.liftMotor.setPower(0);
             }
 
             if(gamepad1.left_trigger > .5f){
-                robot.liftServo.setPosition(0);
+                robot.slideMotor.setPower(-1);
             }else if(gamepad1.left_bumper){
-                robot.liftServo.setPosition(1);
+                robot.slideMotor.setPower(1);
+            }else{
+                robot.slideMotor.setPower(0);
             }
-            robot.clawServo.setPosition(gamepad1.right_trigger);
+
+            if(gamepad1.a){
+                robot.leftIntake.setPower(1);
+                robot.rightIntake.setPower(-1);
+            }else if(gamepad1.y){
+                robot.leftIntake.setPower(-1);
+                robot.rightIntake.setPower(1);
+            }else{
+                robot.leftIntake.setPower(0);
+                robot.rightIntake.setPower(0);
+            }
+
+            //robot.clawServo.setPosition(gamepad1.right_trigger);
 
             //region Mecanum Drive math and controls
             //Get the 2 dimensional vector of the direction of left stick and rotation based on right stick
@@ -66,7 +98,7 @@ public class MecanumDrive extends LinearOpMode{
             speed      = vectorF.magnitude();
             vectorF    = new VectorF(vectorF.get(0) / speed, vectorF.get(1) / speed);
             angle      = (float) Math.atan2(vectorF.get(0), vectorF.get(1));
-            direction  = gamepad1.right_stick_x;
+            direction  = -gamepad1.right_stick_x;
 
             //Apply mathematical operations to find speeds of each motor
             frontLeft  = (float) (speed * Math.sin(angle + Math.PI / 4) + direction) * speedMultiplier;

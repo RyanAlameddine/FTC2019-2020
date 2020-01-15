@@ -44,8 +44,8 @@ public class ProjectPushbot extends Project
     public void Stop(){
         leftMotor  .setPower(0);
         rightMotor .setPower(0);
-        leftServoF .setPosition(1);
-        rightServoF.setPosition(0);
+        leftServoF .setPosition(0);
+        rightServoF.setPosition(1); //hacks the mainframe
         leftServoB .setPosition(1);
         rightServoB.setPosition(0);
     }

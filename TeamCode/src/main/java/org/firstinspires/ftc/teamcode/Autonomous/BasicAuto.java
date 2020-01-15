@@ -18,12 +18,12 @@ public class BasicAuto extends LinearOpMode{
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.backLeft.setPower(1);
-        robot.backRight.setPower(1);
-        robot.frontLeft.setPower(1);
-        robot.frontRight.setPower(1);
+        robot.backLeft.setPower(-1);
+        robot.backRight.setPower(-1);
+        robot.frontLeft.setPower(-1);
+        robot.frontRight.setPower(-1);
 
-        sleep(200);
+        sleep(500);
 
         //Reset robot motors to stop when game is finished
         robot.frontLeft .setPower(0);

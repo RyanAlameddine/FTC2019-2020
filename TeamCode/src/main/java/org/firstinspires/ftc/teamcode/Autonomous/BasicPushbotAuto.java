@@ -14,6 +14,7 @@ public class BasicPushbotAuto extends LinearOpMode{
         //Initialize ProjectMecanum with hardwareMap configuration
         robot.init(hardwareMap);
 
+
         Path p = Path.Blue;
 
 
@@ -33,17 +34,17 @@ public class BasicPushbotAuto extends LinearOpMode{
         //robot.leftMotor .setPower(.4f);
         //sleep(1500);
 
-        RunAuto(p == Path.Blue);
+        RunAuto(p == Path.Red);
 
     }
 
-    public void RunAuto(boolean blue){
+    public void RunAuto(boolean red){
         robot.leftMotor .setPower(-.6f);
         robot.rightMotor.setPower(-.6f);
-        sleep(1250);
+        sleep(1150);
         robot.leftMotor .setPower(-.3f);
         robot.rightMotor.setPower(-.3f);
-        sleep(200);
+        sleep(500);
 
         robot.Stop();
 
@@ -51,12 +52,12 @@ public class BasicPushbotAuto extends LinearOpMode{
         robot.rightServoB.setPosition(1);
         sleep(1200);
 
-        robot.leftMotor .setPower(blue ?  1f : .5f);
-        robot.rightMotor.setPower(blue ? .5f :  1f);
-        sleep(1650);
+        robot.leftMotor .setPower(red ?  1f : .6f);
+        robot.rightMotor.setPower(red ? .6f :  1f);
+        sleep(1250);
 
-        robot.leftMotor .setPower(!blue ? -1 : 1);
-        robot.rightMotor.setPower(!blue ?  1 : -1);
+        robot.leftMotor .setPower(!red ? -1 : 1);
+        robot.rightMotor.setPower(!red ?  1 : -1);
         sleep(2000);
 
         robot.leftMotor .setPower(-.9f);
@@ -64,11 +65,11 @@ public class BasicPushbotAuto extends LinearOpMode{
 
         robot.leftServoB.setPosition(1);
         robot.rightServoB.setPosition(0);
-        sleep(1000);
+        sleep(1300);
 
         robot.leftMotor .setPower(.6f);
         robot.rightMotor.setPower(.6f);
-        sleep(1450);
+        sleep(1000);
     }
 }
 
