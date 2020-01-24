@@ -1,0 +1,121 @@
+package org.firstinspires.ftc.teamcode.Autonomous;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.Projects.ProjectMecCam;
+import org.firstinspires.ftc.teamcode.Projects.ProjectPushbot;
+
+@Autonomous(name="PushbotSkystoneAuto", group="Mecanum")
+public class PushbotSkystoneAuto extends LinearOpMode{
+    public ProjectPushbot robot = new ProjectPushbot();
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        //Initialize ProjectMecanum with hardwareMap configuration
+        robot.init(hardwareMap);
+
+        robot.leftMotor .setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftMotor.setTargetPosition(500);
+        robot.rightMotor.setTargetPosition(500);
+        robot.leftMotor .setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        parameters.vuforiaLicenseKey = "AclOCKX/////AAABmVMcwvR8lE0inBkpYnUkWaw7ay7BC7I7cnlDQhYSBmWArpdTIiM8c2VKv7t8NMx+gJbqipUTvEY5njhhVXdcTDJOg6RmtybMYHMbDBevdAGg+SIPSeBOeXi5pJd6xlDDPu1JbSPQRyEZKZmWXxoIkht2JZD0DC6QxdGJUxVi0n0FD0dLVRAuWSr+ROLsi13GA126OzIJvm6Ego5RXeEAsM/RPk3mUH40iSeXU6mum+LzdV/yl8u0VC2YeHMH6GNKWGa0Ux+DB5Fp2f8Mjnz+xnuXaralDWBhR2r3DzKE979cNXeCpY9WtmRatRKWdhpOSm3QwLfAowIeZOZ6tH8EU8q4qN61rzLpzd/A6rR4QLp5";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+        VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        VuforiaTrackables trackables = vuforia.loadTrackablesFromAsset("Skystone");
+
+        VuforiaTrackableDefaultListener skystoneTrackable = (VuforiaTrackableDefaultListener) trackables.get(0).getListener();
+
+        trackables.activate();
+        waitForStart();
+
+        robot.leftServoF.setPosition(0);
+        robot.rightServoF.setPosition(1);
+
+        robot.leftMotor.setPower(.7);
+        robot.rightMotor.setPower(.7);
+
+
+
+        robot.leftMotor.setTargetPosition(500);
+        robot.rightMotor.setTargetPosition(500);
+        WaitTillTargetReached(10, true);
+        telemetry.addData("hi", "you got here");
+        telemetry.update();
+
+        OpenGLMatrix location = skystoneTrackable.getUpdatedRobotLocation();
+        float x = location.getTranslation().get(0);
+        telemetry.addData("x", x);
+        telemetry.update();
+        if (x>0){
+            robot.leftMotor.setTargetPosition(250 + getL());
+            robot.rightMotor.setTargetPosition(getR() - 250);
+            telemetry.addData("x", x);
+            telemetry.addData("left", getL());
+            telemetry.addData("right",getR());
+            telemetry.update();
+            WaitTillTargetReached(10, true);
+
+
+        }
+        if (x<0){
+            robot.rightMotor.setTargetPosition(250 + getR());
+            robot.leftMotor.setTargetPosition(getL() - 250);
+            telemetry.addData("x", x);
+            telemetry.addData("left", getL());
+            telemetry.addData("right",getR());
+            telemetry.update();
+            WaitTillTargetReached(10, true);
+        }
+
+
+
+
+
+
+
+        //Reset robot motors to stop when game is finished
+
+        robot.Stop();
+    }
+
+    private void WaitTillTargetReached(int tolerance, boolean lock){
+        int leftDifference = Math.abs(robot.leftMotor.getTargetPosition() - robot.leftMotor.getCurrentPosition());
+        int rightDifference = Math.abs(robot.rightMotor.getTargetPosition() - robot.rightMotor.getCurrentPosition());
+        while(leftDifference > tolerance || rightDifference > tolerance)
+        {
+            sleep(1);
+        }
+        if(!lock)
+        {
+            robot.leftMotor.setPower(0);
+            robot.rightMotor.setPower(0);
+        }
+    }
+
+    private int getL (){
+        return robot.leftMotor.getTargetPosition();
+
+
+    }
+    private int getR (){
+        return robot.rightMotor.getTargetPosition();
+
+
+    }
+}
