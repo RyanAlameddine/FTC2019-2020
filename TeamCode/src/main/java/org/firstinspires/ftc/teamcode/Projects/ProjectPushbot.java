@@ -4,6 +4,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+
 public class ProjectPushbot extends Project
 {
     public DcMotor rightMotor = null;
@@ -12,6 +15,8 @@ public class ProjectPushbot extends Project
     public Servo  rightServoF = null;
     public Servo   leftServoB = null;
     public Servo  rightServoB = null;
+
+    public WebcamName camera = null;
 
     /* Initialize standard Hardware interfaces */
     @Override
@@ -26,6 +31,8 @@ public class ProjectPushbot extends Project
         rightServoF = hwMap.servo.get("rightServoF");
         leftServoB  = hwMap.servo.get("leftServoB");
         rightServoB = hwMap.servo.get("rightServoB");
+
+        camera = hwMap.get(WebcamName.class, "camera");
 
         //Setup Motor directions and Encoder settings
         rightMotor.setDirection(DcMotor.Direction.FORWARD);

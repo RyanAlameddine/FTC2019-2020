@@ -15,8 +15,10 @@ public class LiftBotDrive extends LinearOpMode{
 
     //Speed multiplier. The higher it is, the more likely to clip at high speeds because motor max is 1
     private float speedMultiplier = 1;
+    boolean xPressed = false;
 
     //Speed multiplier when slow mode is active
+    boolean slowMode = false;
     private float slowModeMultiplier = .4f;
 
     /* Calculation variables DO NOT CHANGE */
@@ -90,7 +92,18 @@ public class LiftBotDrive extends LinearOpMode{
                 robot.rightIntake.setPower(0);
             }
 
+
             //robot.clawServo.setPosition(gamepad1.right_trigger);
+
+            //slow mode toggle
+            if(gamepad1.x && !xPressed){
+                slowMode = !slowMode;
+                xPressed = true;
+            }
+
+            if(!gamepad1.x){
+                xPressed = false;
+            }
 
             //region Mecanum Drive math and controls
             //Get the 2 dimensional vector of the direction of left stick and rotation based on right stick
