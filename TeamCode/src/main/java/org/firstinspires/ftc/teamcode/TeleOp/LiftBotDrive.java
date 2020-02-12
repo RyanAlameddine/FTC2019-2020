@@ -46,12 +46,12 @@ public class LiftBotDrive extends LinearOpMode{
         robot.init(hardwareMap);
         waitForStart();
 
-        boolean bPressed = false;
+        boolean aPressed = false;
         boolean raised = false;
         while(opModeIsActive()) {
-            if (gamepad1.b){
-                if(bPressed == false){
-                    bPressed = true;
+            if (gamepad2.a){
+                if(aPressed == false){
+                    aPressed = true;
                     raised = !raised;
                     if(raised){
                         robot.clawServo.setPosition(0);
@@ -62,26 +62,24 @@ public class LiftBotDrive extends LinearOpMode{
                 }
             }
             else {
-                bPressed = false;
+                aPressed = false;
             }
 
-            if(gamepad1.dpad_up){
-                robot.liftMotor.setPower(.4);
+            if(gamepad2.dpad_up){
+                robot.leftIntake.setPower(1);
+                robot.rightIntake.setPower(-1);
             }else if(gamepad1.dpad_down){
-                robot.liftMotor.setPower(-.4);
+                robot.leftIntake.setPower(-1);
+                robot.rightIntake.setPower(1);
             }else{
-                robot.liftMotor.setPower(0);
+                robot.leftIntake.setPower(1);
+                robot.rightIntake.setPower(-1);
             }
 
-            if(gamepad1.left_trigger > .5f){
-                robot.slideMotor.setPower(-1);
-            }else if(gamepad1.left_bumper){
-                robot.slideMotor.setPower(1);
-            }else{
-                robot.slideMotor.setPower(0);
-            }
+            robot.slideMotor.setPower(gamepad2.right_stick_y);
+            robot.liftMotor.setPower(gamepad2.left_stick_y);
 
-            if(gamepad1.a){
+            /*if(gamepad1.a){
                 robot.leftIntake.setPower(1);
                 robot.rightIntake.setPower(-1);
             }else if(gamepad1.y){
@@ -90,7 +88,7 @@ public class LiftBotDrive extends LinearOpMode{
             }else{
                 robot.leftIntake.setPower(0);
                 robot.rightIntake.setPower(0);
-            }
+            }*/
 
 
             //robot.clawServo.setPosition(gamepad1.right_trigger);
