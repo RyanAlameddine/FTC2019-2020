@@ -78,26 +78,52 @@ public class PushbotSkystoneAuto extends LinearOpMode{
         telemetry.addData("x", x);
         telemetry.update();
 
+        int turnAmount = 0;
 
         if (x<-130){
-            robot.leftMotor.setTargetPosition(138 + getL());
-            robot.rightMotor.setTargetPosition(getR() - 138);
+            robot.leftMotor.setTargetPosition(130 + getL());
+            robot.rightMotor.setTargetPosition(getR() - 130);
             WaitTillTargetReached(50, true);
-
+            turnAmount = 130;
 
 
         }
         else if(x>130){
-            robot.rightMotor.setTargetPosition(138 + getR());
-            robot.leftMotor.setTargetPosition(getL() - 138);
+            robot.rightMotor.setTargetPosition(getR() + 160);
+            robot.leftMotor.setTargetPosition(getL() - 160);
             WaitTillTargetReached(50, true);
+            turnAmount = -160;
         }
 
-        robot.rightMotor.setTargetPosition(getR() + 1183);
-        robot.leftMotor.setTargetPosition(getL() + 1883);
+        robot.rightMotor.setTargetPosition(getR() + 1000);
+        robot.leftMotor.setTargetPosition(getL() + 1000);
+        WaitTillTargetReached(50, true);
+
+        robot.rightMotor.setPower(.5);
+        robot.leftMotor.setPower(.5);
+        robot.rightMotor.setTargetPosition(getR() + 483);
+        robot.leftMotor.setTargetPosition(getL() + 483);
+        robot.rightMotor.setPower(.7);
+        robot.leftMotor.setPower(.7);
 
         WaitTillTargetReached(50, true);
 
+        robot.rightServoF.setPosition(1);
+        robot.leftServoF.setPosition(0);
+        sleep(876);
+
+        robot.leftMotor.setTargetPosition(getL() - 1182);
+        robot.rightMotor.setTargetPosition(getR() - 1182);
+
+
+
+
+        WaitTillTargetReached(50, true);
+
+        robot.leftMotor.setTargetPosition(getL() - turnAmount);
+        robot.rightMotor.setTargetPosition((getR() + turnAmount));
+
+        WaitTillTargetReached(50, true);
 
         //Reset robot motors to stop when game is finished
         robot.Stop();

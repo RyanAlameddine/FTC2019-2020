@@ -41,7 +41,7 @@ public class BasicPushbotAuto extends LinearOpMode{
     public void RunAuto(boolean red){
         robot.leftMotor .setPower(-.6f);
         robot.rightMotor.setPower(-.6f);
-        sleep(1150);
+        sleep(756);
         robot.leftMotor .setPower(-.3f);
         robot.rightMotor.setPower(-.3f);
         sleep(500);
