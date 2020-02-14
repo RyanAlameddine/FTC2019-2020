@@ -81,18 +81,18 @@ public class PushbotSkystoneAuto extends LinearOpMode{
         int turnAmount = 0;
 
         if (x<-130){
-            robot.leftMotor.setTargetPosition(130 + getL());
-            robot.rightMotor.setTargetPosition(getR() - 130);
+            robot.leftMotor.setTargetPosition(140 + getL());
+            robot.rightMotor.setTargetPosition(getR() - 140);
             WaitTillTargetReached(50, true);
-            turnAmount = 130;
+            turnAmount = 140 + 17;
 
 
         }
         else if(x>130){
-            robot.rightMotor.setTargetPosition(getR() + 160);
-            robot.leftMotor.setTargetPosition(getL() - 160);
+            robot.rightMotor.setTargetPosition(getR() + 140);
+            robot.leftMotor.setTargetPosition(getL() - 140);
             WaitTillTargetReached(50, true);
-            turnAmount = -160;
+            turnAmount = -140 - 17;
         }
 
         robot.rightMotor.setTargetPosition(getR() + 1000);
@@ -124,9 +124,39 @@ public class PushbotSkystoneAuto extends LinearOpMode{
         robot.rightMotor.setTargetPosition((getR() + turnAmount));
 
         WaitTillTargetReached(50, true);
+        //Entering transition state
 
-        //Reset robot motors to stop when game is finished
+        robot.leftMotor.setTargetPosition(getL() - 428);
+        robot.rightMotor.setTargetPosition(getR() + 428);
+
+        WaitTillTargetReached(50, true);
+
+        robot.leftMotor.setTargetPosition(getL() + 888);
+        robot.rightMotor.setTargetPosition(getR() + 888);
+
+        WaitTillTargetReached(50, true);
+
+        robot.leftMotor.setTargetPosition(getL() - 267);
+        robot.rightMotor.setTargetPosition(getR() + 267);
+
+        WaitTillTargetReached(50, true);
+
+        robot.leftMotor.setPower(1);
+        robot.rightMotor.setPower(1);
+        robot.leftMotor.setTargetPosition(getL() + 3253);
+        robot.rightMotor.setTargetPosition(getR() + 3253);
+
+        WaitTillTargetReached(45, true);
+
+        robot.leftMotor.setPower(.7);
+        robot.rightMotor.setPower(.7);
+        robot.leftMotor.setTargetPosition(getL() - 692);
+        robot.rightMotor.setTargetPosition(getR() + 692);
+
+        WaitTillTargetReached(50, true);
+
         robot.Stop();
+
     }
 
     private void WaitTillTargetReached(int tolerance, boolean lock){
