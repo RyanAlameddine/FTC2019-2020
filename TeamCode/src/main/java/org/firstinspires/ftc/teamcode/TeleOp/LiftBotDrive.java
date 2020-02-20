@@ -15,7 +15,11 @@ public class LiftBotDrive extends LinearOpMode{
 
     //Speed multiplier. The higher it is, the more likely to clip at high speeds because motor max is 1
     private float speedMultiplier = 1;
+
+    private int initialState = 0;
     boolean xPressed = false;
+    boolean yPressed = false;
+    boolean yRaised = false;
 
     //Speed multiplier when slow mode is active
     boolean slowMode = false;
@@ -44,6 +48,7 @@ public class LiftBotDrive extends LinearOpMode{
     public void runOpMode() throws InterruptedException {
         //Initialize ProjectMecanum with hardwareMap configuration
         robot.init(hardwareMap);
+        initialState = robot.liftMotor.getCurrentPosition();
         waitForStart();
 
         boolean aPressed = false;
@@ -65,19 +70,46 @@ public class LiftBotDrive extends LinearOpMode{
                 aPressed = false;
             }
 
+            if (gamepad1.y){
+                if(yPressed == false){
+                    yPressed = true;
+                    yRaised = !yRaised;
+                    if(yRaised){
+                        robot.leftPlatform.setPosition(1);
+                        robot.rightPlatform.setPosition(0);
+                    }
+                    else{
+                        robot.leftPlatform.setPosition(0);
+                        robot.rightPlatform.setPosition(1);
+                    }
+                }
+            }
+            else {
+                aPressed = false;
+            }
+
             if(gamepad2.dpad_up){
                 robot.leftIntake.setPower(1);
                 robot.rightIntake.setPower(-1);
-            }else if(gamepad1.dpad_down){
+            }else if(gamepad2.dpad_down){
                 robot.leftIntake.setPower(-1);
                 robot.rightIntake.setPower(1);
             }else{
-                robot.leftIntake.setPower(1);
-                robot.rightIntake.setPower(-1);
+                robot.leftIntake.setPower(0);
+                robot.rightIntake.setPower(0);
             }
 
-            robot.slideMotor.setPower(gamepad2.right_stick_y);
-            robot.liftMotor.setPower(gamepad2.left_stick_y);
+            robot.slideServo.setPower(gamepad2.right_stick_y);
+            if(robot.liftMotor.getCurrentPosition() < -10000 + initialState && -gamepad2.left_stick_y < 0){
+                robot.slideServo.setPower(0);
+            }else {
+                robot.liftMotor.setPower(-gamepad2.left_stick_y);
+            }
+
+            telemetry.addData("lift", robot.liftMotor.getCurrentPosition());
+            telemetry.addData("lift", initialState);
+
+            telemetry.update();
 
             /*if(gamepad1.a){
                 robot.leftIntake.setPower(1);
