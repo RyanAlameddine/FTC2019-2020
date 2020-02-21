@@ -15,7 +15,11 @@ public class LiftBotDrive extends LinearOpMode{
 
     //Speed multiplier. The higher it is, the more likely to clip at high speeds because motor max is 1
     private float speedMultiplier = 1;
+
+    private int initialState = 0;
     boolean xPressed = false;
+    boolean yPressed = false;
+    boolean yRaised = false;
 
     //Speed multiplier when slow mode is active
     boolean slowMode = false;
@@ -44,14 +48,15 @@ public class LiftBotDrive extends LinearOpMode{
     public void runOpMode() throws InterruptedException {
         //Initialize ProjectMecanum with hardwareMap configuration
         robot.init(hardwareMap);
+        initialState = robot.liftMotor.getCurrentPosition();
         waitForStart();
 
-        boolean bPressed = false;
+        boolean aPressed = false;
         boolean raised = false;
         while(opModeIsActive()) {
-            if (gamepad1.b){
-                if(bPressed == false){
-                    bPressed = true;
+            if (gamepad2.a){
+                if(aPressed == false){
+                    aPressed = true;
                     raised = !raised;
                     if(raised){
                         robot.clawServo.setPosition(0);
@@ -62,26 +67,51 @@ public class LiftBotDrive extends LinearOpMode{
                 }
             }
             else {
-                bPressed = false;
+                aPressed = false;
             }
 
-            if(gamepad1.dpad_up){
-                robot.liftMotor.setPower(.4);
-            }else if(gamepad1.dpad_down){
-                robot.liftMotor.setPower(-.4);
+            if (gamepad1.y){
+                if(yPressed == false){
+                    yPressed = true;
+                    yRaised = !yRaised;
+                    if(yRaised){
+                        robot.leftPlatform.setPosition(1);
+                        robot.rightPlatform.setPosition(0);
+                    }
+                    else{
+                        robot.leftPlatform.setPosition(0);
+                        robot.rightPlatform.setPosition(1);
+                    }
+                }
+            }
+            else {
+                aPressed = false;
+            }
+
+            if(gamepad2.dpad_up){
+                robot.leftIntake.setPower(1);
+                robot.rightIntake.setPower(-1);
+            }else if(gamepad2.dpad_down){
+                robot.leftIntake.setPower(-1);
+                robot.rightIntake.setPower(1);
             }else{
-                robot.liftMotor.setPower(0);
+                robot.leftIntake.setPower(0);
+                robot.rightIntake.setPower(0);
             }
 
-            if(gamepad1.left_trigger > .5f){
-                robot.slideMotor.setPower(-1);
-            }else if(gamepad1.left_bumper){
-                robot.slideMotor.setPower(1);
-            }else{
-                robot.slideMotor.setPower(0);
+            robot.slideServo.setPower(gamepad2.right_stick_y);
+            if(robot.liftMotor.getCurrentPosition() < -10000 + initialState && -gamepad2.left_stick_y < 0){
+                robot.slideServo.setPower(0);
+            }else {
+                robot.liftMotor.setPower(-gamepad2.left_stick_y);
             }
 
-            if(gamepad1.a){
+            telemetry.addData("lift", robot.liftMotor.getCurrentPosition());
+            telemetry.addData("lift", initialState);
+
+            telemetry.update();
+
+            /*if(gamepad1.a){
                 robot.leftIntake.setPower(1);
                 robot.rightIntake.setPower(-1);
             }else if(gamepad1.y){
@@ -90,7 +120,7 @@ public class LiftBotDrive extends LinearOpMode{
             }else{
                 robot.leftIntake.setPower(0);
                 robot.rightIntake.setPower(0);
-            }
+            }*/
 
 
             //robot.clawServo.setPosition(gamepad1.right_trigger);
