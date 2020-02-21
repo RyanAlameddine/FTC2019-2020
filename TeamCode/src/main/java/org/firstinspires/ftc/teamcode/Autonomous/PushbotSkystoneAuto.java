@@ -266,7 +266,7 @@ public class PushbotSkystoneAuto extends LinearOpMode{
 
         robot.leftMotor.setPower(-.6f);
         robot.rightMotor.setPower(-.6f);
-        sleep(462);
+        sleep(431);
 
         robot.leftMotor.setPower(-.6f);
         robot.rightMotor.setPower(.6f);
