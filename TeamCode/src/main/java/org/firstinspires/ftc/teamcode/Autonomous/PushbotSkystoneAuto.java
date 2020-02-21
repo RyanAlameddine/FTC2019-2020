@@ -144,10 +144,54 @@ public class PushbotSkystoneAuto extends LinearOpMode{
 
         robot.leftMotor.setPower(1);
         robot.rightMotor.setPower(1);
-        robot.leftMotor.setTargetPosition(getL() + 3453);
-        robot.rightMotor.setTargetPosition(getR() + 3453);
+
+        robot.leftServoF.setPosition(1);
+        robot.rightServoF.setPosition(0);
+        robot.leftMotor.setTargetPosition(getL() + 2945);
+        robot.rightMotor.setTargetPosition(getR() + 2945);
+        //robot.leftMotor.setTargetPosition(getL() + 3453);
+        //robot.rightMotor.setTargetPosition(getR() + 3453);
+
 
         WaitTillTargetReached(45, true);
+
+        robot.leftMotor.setPower(0);
+        robot.rightMotor.setPower(0);
+        sleep(300);
+
+        robot.leftMotor.setPower(1f);
+        robot.rightMotor.setPower(1f);
+
+        robot.leftMotor.setTargetPosition(getL() - 3945);
+        robot.rightMotor.setTargetPosition(getR() - 3945);
+        WaitTillTargetReached(45, true);
+
+        robot.leftMotor.setPower(.6f);
+        robot.rightMotor.setPower(.6f);
+        robot.leftMotor.setTargetPosition(getL() + 227);
+        robot.rightMotor.setTargetPosition(getR() - 227);
+        WaitTillTargetReached(45, true);
+
+
+        robot.leftMotor.setTargetPosition(getL() + 1000);
+        robot.rightMotor.setTargetPosition(getR() + 1000);
+        WaitTillTargetReached(45, true);
+        robot.rightServoF.setPosition(1);
+        robot.leftServoF.setPosition(0);
+        sleep(476);
+
+        robot.leftMotor.setTargetPosition(getL() - 1000);
+        robot.rightMotor.setTargetPosition(getR() - 1000);
+        WaitTillTargetReached(45, true);
+
+        robot.leftMotor.setTargetPosition(getL() - 227);
+        robot.rightMotor.setTargetPosition(getR() + 227);
+        WaitTillTargetReached(45, true);
+
+        robot.leftMotor.setPower(1);
+        robot.rightMotor.setPower(1);
+        robot.leftMotor.setTargetPosition(getL() + 2945);
+        robot.rightMotor.setTargetPosition(getR() + 2945);
 
         robot.leftMotor.setPower(.7);
         robot.rightMotor.setPower(.7);
