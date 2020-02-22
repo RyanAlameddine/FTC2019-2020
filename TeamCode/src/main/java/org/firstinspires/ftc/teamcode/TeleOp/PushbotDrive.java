@@ -22,6 +22,7 @@ public class PushbotDrive extends LinearOpMode{
         boolean bPressed    = false;
 
         float speedMultiplier = 1;
+        float speedMultiplier2 = 1;
         while(opModeIsActive()) {
             if (gamepad1.b){
                 if(bPressed == false){
@@ -37,9 +38,10 @@ public class PushbotDrive extends LinearOpMode{
             else {
                 bPressed = false;
             }
+            speedMultiplier2 = .5f + gamepad1.right_trigger/2f;
 
-            robot.leftMotor .setPower(-gamepad1.left_stick_y * speedMultiplier);
-            robot.rightMotor.setPower(-gamepad1.right_stick_y* speedMultiplier);
+            robot.leftMotor .setPower(-gamepad1.left_stick_y * speedMultiplier * speedMultiplier2);
+            robot.rightMotor.setPower(-gamepad1.right_stick_y* speedMultiplier * speedMultiplier2);
 
             if (gamepad1.y){
                 if(yPressed == false){
