@@ -6,16 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.Projects.ProjectMecCam;
 import org.firstinspires.ftc.teamcode.Projects.ProjectPushbot;
 
-@Autonomous(name="PushbotSkystoneAuto", group="Mecanum")
-public class PushbotSkystoneAuto extends LinearOpMode{
+@Autonomous(name="SkystoneOnlyAuto", group="Mecanum")
+public class SkystoneOnlyAuto extends LinearOpMode{
     public ProjectPushbot robot = new ProjectPushbot();
 
     @Override
@@ -239,82 +237,20 @@ public class PushbotSkystoneAuto extends LinearOpMode{
 
         robot.leftMotor.setPower(1);
         robot.rightMotor.setPower(1);
-        robot.leftMotor.setTargetPosition(getL() + 3453);
-        robot.rightMotor.setTargetPosition(getR() + 3453);
+        robot.leftMotor.setTargetPosition(getL() + 2353);
+        robot.rightMotor.setTargetPosition(getR() + 2353);
 
         WaitTillTargetReached(45, true);
 
-        robot.leftMotor.setPower(.7);
-        robot.rightMotor.setPower(.7);
-        robot.leftMotor.setTargetPosition(getL() - 752*dM);
-        robot.rightMotor.setTargetPosition(getR() + 752*dM);
-
-        WaitTillTargetReached(50, true);
-
-
-        robot.leftMotor .setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-        robot.leftMotor .setPower(-.3f);
-        robot.rightMotor.setPower(-.3f);
-        sleep(1426);
-
-        robot.Stop();
-
-        robot.leftServoB.setPosition(0);
-        robot.rightServoB.setPosition(1);
-        sleep(1200);
-
-        robot.leftMotor .setPower(blue ?  1f : .6f);
-        robot.rightMotor.setPower(blue ? .6f :  1f);
-        sleep(1250);
-
-        while(Math.abs(robot.imu.getAngularOrientation().firstAngle) > 20) {
-            robot.leftMotor.setPower(!blue ? -1 : 1);
-            robot.rightMotor.setPower(!blue ? 1 : -1);
-        }
-        //sleep(1758);
-
-        robot.leftMotor .setPower(-.9f);
-        robot.rightMotor.setPower(-.9f);
-
-        robot.leftServoB.setPosition(1);
-        robot.rightServoB.setPosition(0);
-        sleep(1300);
-
-        robot.leftMotor.setPower(.6f);
-        robot.rightMotor.setPower(.6f);
-        sleep(200);
-
-        robot.leftMotor.setPower(0);
-        sleep(200);
-        robot.leftMotor.setPower(.6f);
-        sleep(400);
-
-        robot.leftMotor.setPower(.6f);
-        robot.rightMotor.setPower(-.6f);
-        sleep(726);
-
-        robot.leftMotor.setPower(0f);
-        robot.rightMotor.setPower(0f);
-
         robot.leftServoF.setPosition(1);
         robot.rightServoF.setPosition(0);
-        sleep(768);
 
-        robot.leftMotor.setPower(-.6f);
-        robot.rightMotor.setPower(-.6f);
-        sleep(431);
+        sleep(1000);
 
-        robot.leftMotor.setPower(-.6f);
-        robot.rightMotor.setPower(.6f);
-        sleep(635);
+        robot.leftMotor.setTargetPosition(getL() - 1000);
+        robot.rightMotor.setTargetPosition(getR() - 1000);
 
-        robot.leftMotor.setPower(.7f);
-        robot.rightMotor.setPower(.7f);
-        sleep(294);
-
+        WaitTillTargetReached(45, true);
 
     }
 }

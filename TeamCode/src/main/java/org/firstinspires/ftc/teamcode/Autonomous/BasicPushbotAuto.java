@@ -41,7 +41,7 @@ public class BasicPushbotAuto extends LinearOpMode{
     public void RunAuto(boolean red){
         robot.leftMotor .setPower(-.6f);
         robot.rightMotor.setPower(-.6f);
-        sleep(756);
+        sleep(956);
         robot.leftMotor .setPower(-.3f);
         robot.rightMotor.setPower(-.3f);
         sleep(500);
@@ -56,9 +56,13 @@ public class BasicPushbotAuto extends LinearOpMode{
         robot.rightMotor.setPower(red ? .6f :  1f);
         sleep(1250);
 
-        robot.leftMotor .setPower(!red ? -1 : 1);
-        robot.rightMotor.setPower(!red ?  1 : -1);
-        sleep(2000);
+        while(Math.abs(robot.imu.getAngularOrientation().firstAngle) > 20) {
+            robot.leftMotor.setPower(!red ? -1 : 1);
+            robot.rightMotor.setPower(!red ? 1 : -1);
+        }
+        //robot.leftMotor .setPower(!red ? -1 : 1);
+        //robot.rightMotor.setPower(!red ?  1 : -1);
+        //sleep(2000);
 
         robot.leftMotor .setPower(-.9f);
         robot.rightMotor.setPower(-.9f);

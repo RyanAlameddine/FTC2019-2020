@@ -38,7 +38,7 @@ public class PushbotDrive extends LinearOpMode{
             else {
                 bPressed = false;
             }
-            speedMultiplier2 = .5f + gamepad1.right_trigger/2f;
+            speedMultiplier2 = .5f + (1 - gamepad1.right_trigger)/2f;
 
             robot.leftMotor .setPower(-gamepad1.left_stick_y * speedMultiplier * speedMultiplier2);
             robot.rightMotor.setPower(-gamepad1.right_stick_y* speedMultiplier * speedMultiplier2);
